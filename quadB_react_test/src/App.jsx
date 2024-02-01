@@ -1,22 +1,40 @@
-import React from "react";
-import MovieList from "./components/MovieList/MovieList";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import MovieList from "./components/MovieList/MovieList/MovieList";
 import MovieSummary from "./components/MovieList/MovieSummary/MovieSummary";
+import BookingPage from "./components/MovieList/BookingPage/BookingPage";
 
 function App() {
-  return (
-    <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<MovieList />} />
+  const [movies, setMovies] = useState([]);
 
-          <Route
-            path="/summary/:movieId"
-            element={<MovieSummary  />}
-          />
-        </Routes>
-      </BrowserRouter>
-    </>
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "https://api.tvmaze.com/search/shows?q=all"
+        );
+        setMovies(response.data);
+        console.log("Fetched data:", response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<MovieList movies={movies} />} />
+        <Route
+          path="/summary/:movieId"
+          element={<MovieSummary movies={movies} />}
+        />
+        <Route path="/booking/:movieId" element={<BookingPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

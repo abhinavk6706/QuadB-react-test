@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const MovieSummary = ({ movies }) => {
   const { movieId } = useParams();
 
-  if (!movies) {
+  if (!movies || movies.length === 0) {
     return <div>Loading...</div>;
   }
 
@@ -16,21 +16,28 @@ const MovieSummary = ({ movies }) => {
   if (!selectedMovie) {
     return <div>Movie not found</div>;
   }
+
   return (
-    <div>
-      <h2 className="text-3xl font-bold mb-4">{selectedMovie.show.name}</h2>
-      <img
-        src={selectedMovie.show.image.original}
-        alt={selectedMovie.show.name}
-        className="w-full h-64 object-cover mb-4"
-      />
-      <p className="text-lg">{selectedMovie.show.summary}</p>
-      <Link
-        to={`/booking/${movieId}`}
-        className="bg-blue-500 text-white rounded px-4 py-2 mt-4"
-      >
-        Book Ticket
-      </Link>
+    <div className="bg-white rounded-md  shadow mt-2 p-2 mx-4 pb-2">
+      <div className="flex items-center gap-5">
+      <div>
+        <img
+          src={selectedMovie.show.image.original}
+          alt={selectedMovie.show.name}
+          className="w-80 h-full rounded-md object-cover"
+        />
+      </div>
+      <div>
+        <h2 className="text-xl font-bold mb-2">{selectedMovie.show.name}</h2>
+        <p className="text-base mb-4">{selectedMovie.show.summary}</p>
+        <Link
+          to={`/booking/${movieId}`}
+          className="bg-[#ec5e71] text-white rounded px-4 py-2 "
+        >
+          Book Ticket
+        </Link>
+      </div>
+      </div>
     </div>
   );
 };
