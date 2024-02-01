@@ -1,9 +1,12 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 
 const MovieList = ({ movies }) => {
-  if (movies.length === 0) {
+  const moviesWithImages = movies.filter(
+    (movie) => movie.show.image && movie.show.image.medium
+  );
+
+  if (moviesWithImages.length === 0) {
     return <div>Loading...</div>;
   }
 
@@ -11,8 +14,11 @@ const MovieList = ({ movies }) => {
     <div className="my-8 lg:mx-10 mx-5">
       <h2 className="text-3xl font-bold text-center mb-4">Movie List</h2>
       <ul className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {movies.map((movie) => (
-          <li key={movie.show.id} className="bg-white rounded-md shadow p-4 pb-5">
+        {moviesWithImages.map((movie) => (
+          <li
+            key={movie.show.id}
+            className="bg-white rounded-md shadow p-4 pb-5"
+          >
             {movie.show.image && movie.show.image.medium && (
               <img
                 src={movie.show.image.medium}
